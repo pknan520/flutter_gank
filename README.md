@@ -1,6 +1,6 @@
 # flutter_gank
 
-A new Flutter project.
+Flutter App for Gank.io
 
 ## Getting Started
 
