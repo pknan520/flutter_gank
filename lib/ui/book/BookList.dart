@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:flutter_gank/models/BookResp.dart';
+import 'package:flutter_gank/ui/comm/LoadingMoreFooter.dart';
+import 'package:flutter_gank/ui/comm/LoadingPage.dart';
 import 'package:flutter_gank/ui/comm/MyWebview.dart';
 
 class BookList extends StatefulWidget {
@@ -13,10 +15,13 @@ class BookList extends StatefulWidget {
 }
 
 class _BookListState extends State<BookList>
-    with SingleTickerProviderStateMixin {
+    with AutomaticKeepAliveClientMixin {
   final List<BookContent> data = <BookContent>[];
   num currPage = 1;
   ScrollController _controller;
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {
@@ -52,18 +57,21 @@ class _BookListState extends State<BookList>
 
   @override
   Widget build(BuildContext context) {
-    return RefreshIndicator(
-      onRefresh: () => _getData(true),
-      child: ListView.builder(
-        itemCount: 2 * data.length,
-        itemBuilder: (context, i) {
-          if (i.isOdd) return Divider();
-          final index = i ~/ 2;
-          return _buildRow(data[index]);
-        },
-        controller: _controller,
-      ),
-    );
+    return data.length == 0
+        ? LoadingPage()
+        : RefreshIndicator(
+            onRefresh: () => _getData(true),
+            child: ListView.builder(
+              itemCount: 2 * data.length + 1,
+              itemBuilder: (context, i) {
+                if (i.isOdd) return Divider();
+                if (i == 2 * data.length) return LoadingMoreFooter();
+                final index = i ~/ 2;
+                return _buildRow(data[index]);
+              },
+              controller: _controller,
+            ),
+          );
   }
 
   Widget _buildRow(BookContent content) {
@@ -79,11 +87,10 @@ class _BookListState extends State<BookList>
           ),
         ),
       ),
-      onTap: () => Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) {
-              return MyWebview(title: content.title, url: content.url);
-          }
-      )),
+      onTap: () =>
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+            return MyWebview(title: content.title, url: content.url);
+          })),
     );
   }
 }
