@@ -37,10 +37,10 @@ class _HomeState extends State<Home> {
     AppBarBehavior _appBarBehavior = AppBarBehavior.pinned;
     return Scaffold(
       drawer: MyDrawer(),
-    //   floatingActionButton: FloatingActionButton(
-    //     onPressed: () => _getData(),
-    //     child: Icon(Icons.edit),
-    //   ),
+      //   floatingActionButton: FloatingActionButton(
+      //     onPressed: () => _getData(),
+      //     child: Icon(Icons.edit),
+      //   ),
       body: CustomScrollView(
         slivers: <Widget>[
           SliverAppBar(
@@ -54,11 +54,18 @@ class _HomeState extends State<Home> {
               background: Stack(
                 fit: StackFit.expand,
                 children: <Widget>[
-                  Image.asset(
-                    'images/lake.jpg',
-                    fit: BoxFit.cover,
-                    height: 256.0,
-                  ),
+                  ganks['福利'] != null
+                      ? FadeInImage.assetNetwork(
+                          placeholder: 'images/lake.jpg',
+                          image: ganks['福利'][0].url,
+                          fit: BoxFit.cover,
+                          height: 256.0,
+                        )
+                      : Image.asset(
+                          'images/lake.jpg',
+                          fit: BoxFit.cover,
+                          height: 256.0,
+                        ),
                 ],
               ),
             ),

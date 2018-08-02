@@ -19,10 +19,11 @@ class MyDrawer extends StatelessWidget {
               )
             ],
             decoration: BoxDecoration(
-              image: DecorationImage(
-                fit: BoxFit.cover,
-                image: ExactAssetImage('images/lake.jpg'),
-              ),
+              color: Theme.of(context).primaryColor,
+              // image: DecorationImage(
+              //   fit: BoxFit.cover,
+              //   image: ExactAssetImage('images/lake.jpg'),
+              // ),
             ),
           ),
           MediaQuery.removePadding(
